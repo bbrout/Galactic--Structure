@@ -1,4 +1,4 @@
-# Galactic--Structure
+# Galactic-Structure
 Software and data for research into galactic structure.
 
 This repository is intended for public use in the study of galaxy structure, particularly the relationship between morphology, mass, angular momentum, and distance indicators.
