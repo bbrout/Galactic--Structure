@@ -1,0 +1,35 @@
+﻿
+
+
+
+XPLOT=[ones(cols,1),(1:cols)'];
+yline_plot=XPLOT*B;
+xline_plot=[1:cols];
+
+
+
+sumrowcol=sum(sum(a));
+ colvec=1:colmax;
+ wsumcol=sum(colvec.*sum(a));
+ rowvec=(rowmax+1)-(1:rowmax);
+ wsumrow=sum(rowvec.*sum(a'));
+ wrowmid=round((wsumrow/sumrowcol));
+ wcolmid=round((wsumcol/sumrowcol));
+
+"WCOLMID     WROWMID"
+[wcolmid wrowmid]
+
+midrow=rowmax/2.;
+midcol=colmax/2.;
+
+drow=wrowmid-midrow;
+dcol=wcolmid-midcol;
+"dcol drow"
+[dcol drow]
+
+ X=[0 colmax];
+ Y=[wrowmid wrowmid];
+ line(X,Y,"linestyle","-","color","r");
+ X=[wcolmid wcolmid];
+ Y=[0 rowmax];
+ line(X,Y,"linestyle","-","color","r");

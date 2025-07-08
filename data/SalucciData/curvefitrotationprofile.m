@@ -1,0 +1,115 @@
+function z=curvefitrotationprofile(filename)
+
+    fid=fopen(filename);
+    [A count] = fscanf(fid,'%f %f %f',[3 inf]);
+   disp(sprintf('inside function curvefitrotationprofile filename = %s\n',filename));
+%   disp(sprintf('%f %f %f\n',A));
+   disp(sprintf('count= %f\n',count/3));
+    fclose(fid);
+    [token,remain]=strtok(filename,'.');
+    G=6.67300e-11;
+    msun=1.98892e30;
+    n=0;
+    for(i=1:count/3)
+      n=n+1;
+      v(n)=A(2,i);
+      r(n)=(A(1,i)+0)/60;
+      err(n)=2;
+      if r(n) ~=0
+	y(n)=(v(n)/r(n))^2;
+	x(n)=v(n)^2;
+      else
+	n=n-1;
+      end
+    end  
+    p = polyfit(x,y,1);
+      m=p(1)
+
+    b=p(2)  
+
+%    [p,s,mu] = polyfit(x,y,1);
+    
+%      ste = sqrt(diag(inv(s.R)*inv(s.R')).*s.normr.^2./s.df)
+%      mu
+%      s
+
+
+    v_max=sqrt(b/(-m))
+    v_max=v_max/3e5;
+    w_0 = v_max /(2*pi);
+    factor=sqrt(-m/w_0^2);
+    distance=360*60/(2*pi)*factor;
+    distance=distance/3.26/1e6
+    radius = r(n)*factor;
+    density=(v_max*3e8)^2/(2*G);
+    mass = 2*radius*9.4605284e15*density/msun;
+    [C maxindex]=max(x);
+    xmax=x(maxindex);
+    dx=xmax/100.;
+    u=0;
+    
+    for (i=1:100)
+      u=u+dx;
+      xx(i)=u;
+      yy(i)=m*u+b;
+    end
+    sum2=0.0;
+    
+    [token,remain]=strtok(filename,'.');
+    figure(1);
+    plot(x,y,'+',xx,yy);
+    title(token);
+    [c maxindex]=max(r);
+    rmax=r(maxindex);
+    dr=r(maxindex)/100;
+    u=0;
+    for (i=1:100)
+      u=u+dr;
+      rr(i)=u;
+      vv(i)=(v_max)*3e5 * w_0 * u*factor/sqrt(1+(w_0*u*factor)^2);
+    end
+   
+    figure_out=figure(2);
+    plotit=plot(r,v,'ks','MarkerSize',10,rr,vv);
+    title(token);
+    xlabel('Radial distance (arcmin)');
+    ylabel('Tangential velocity (kps)');
+      sum1=0;
+    sumy=0.0;
+    sumx=0.0;
+    sumxx=0.0;
+    avx=mean(x);
+    for (i=1:n)
+      sumy=sumy+(y(i)-(m*x(i)+b))^2;
+      sumx=sumx+(x(i)-avx)^2;
+      sumxx=sumxx+(x(i))^2;
+      u=r(i);
+      w=(v_max)*3e5 * w_0 * u*factor/sqrt(1+(w_0*u*factor)^2);
+      sum2=sum2+((v(i)-w))^2;
+      sum1=sum1+abs(v(i)-w);
+    end
+    deltam=sqrt(1/(n-2) * sumy/sumx)
+    deltab=deltam * sqrt(1/n * sumxx)
+    rel_deltak=abs(deltam/m) + 0.5*abs(deltab/b)
+    deltadistance=rel_deltak * distance
+    [C minindex]=min(r);
+    rmin=r(minindex);
+    sum1;
+    sigma=sqrt(sum2/n)
+        mass
+%        filename_output=strcat(token,'.gif');
+%        imwrite(plotit,filename_output,'gif');
+%    filename_output2=strcat(token,'.eps');
+%      print(figure_out,filename_output2,'-deps');
+%      filename_output2=strcat(token,'.jpeg');
+%      print(figure_out,filename_output2,'-djpeg');
+
+
+
+%    dfid=fopen('galaxydatafile.txt','a+');
+
+%      fprintf(dfid,'"%s",%g,%g,%g,%g,%g,%g\n',token,v_max*3e5,distance,radius,density,mass,sigma);
+%      disp(sprintf('"%s",%g,%g,%g,%g,%g,%g\n',token,v_max*3e5,distance,radius,density,mass,sigma));
+%      fclose(dfid);
+    end
+ 
