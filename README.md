@@ -12,3 +12,8 @@ Fortunately, a magnetic tape copy had been ordered and preserved by Paolo Salucc
 
 Additional Notes
 Several files in this repository reflect prior and ongoing exploratory work, including attempts to relate morphological features to galactic dynamics. This README will be expanded as the research develops.
+
+## Work by Dr. Vera Rubin
+
+This repository includes a dedicated directory containing materials related to my investigation into the work and legacy of Vera C. Rubin. The collection draws from publicly available records housed at the Library of Congress, including Rubin’s correspondence, observation logs, lecture notes, and unpublished writings spanning her career as a pioneering astronomer. These files support a broader analysis of galactic rotation data and the historical context surrounding Rubin’s contributions to astrophysics and the dark matter debate.
+
